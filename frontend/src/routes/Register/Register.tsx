@@ -33,14 +33,13 @@ const Login = () => {
   return (
     <Layout style={{ justifyContent: 'center' }}>
       <Card size='md'>
-        <Text fontSize='xxl' bold style={{ alignSelf: 'center' }}>Giriş</Text>
+        <Text fontSize='xxl' bold style={{ alignSelf: 'center' }}>Kayıt</Text>
         <Form onSubmit={handleSubmit}>
           <Input name='email' id='email' type='email' placeholder='Email' label='Email' />
           <Input name='password' id='password' type='password' placeholder='Şifre' label='Şifre' />
-          <Button variant='primary' type="submit">Giriş Yap</Button>
+          <Button variant='primary' type="submit">Kayıt ol</Button>
         </Form>
-        <Text fontSize='s' style={{ alignSelf: 'flex-start' }}>Hesabınız mı yok? <Link to='/register' style={{ color: '#01C2FF' }}>Yeni bir hesap oluşturun!</Link> </Text>
-        <Text fontSize='s' style={{ alignSelf: 'flex-start', marginTop: '-1rem' }}><Link to='/forgotPassword' style={{ color: '#01C2FF' }}>Şifremi unuttum</Link></Text>
+        <Text fontSize='s'><Link to='/' style={{ color: '#01C2FF' }}>Giris Yapın</Link> </Text>
       </Card>
     </Layout>
   )

@@ -1,6 +1,7 @@
 import { FlexProps } from 'components/Flex/types'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
+import { flexbox, space, maxWidth } from 'styled-system'
 
 const cardSizes = {
   sm: {
@@ -38,6 +39,10 @@ const StyledCard = styled.div<CardProps>`
   ${p => p.theme.mediaQueries.m} {
     max-width: 90%;
   }
+
+  ${flexbox}
+  ${space}
+  ${maxWidth}
 `
 
 const Card: React.FC<CardProps & PropsWithChildren> = ({ children, ...props }) => {

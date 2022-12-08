@@ -52,7 +52,6 @@ app.use("/api", apiRoutes);
 
 app.use((err, req, res, next) => {
   const { statusCode, message, data } = err;
-  console.log(err);
   res.status(statusCode).json({ message, data });
 });
 

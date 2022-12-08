@@ -24,7 +24,6 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(e.target.elements.email.value)
     const data = { email: e.target.elements.email.value, password: e.target.elements.password.value }
     const result = await axios.post('/api/user/createUser', data)
     console.log(result)

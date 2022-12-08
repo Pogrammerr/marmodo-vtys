@@ -7,8 +7,12 @@ import ClassCard from './components/ClassCard'
 import NewPostCard from './components/NewPostCard'
 import PostCard from './components/PostCard'
 import HomeworkCard from './components/HomeworkCard'
+import { useUser } from 'state/hooks'
 
 const Home = () => {
+  const user = useUser()
+
+  console.log(user)
 
   return (
     <Layout>

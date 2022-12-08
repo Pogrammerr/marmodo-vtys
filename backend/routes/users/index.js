@@ -13,6 +13,7 @@ router.use(
       .withMessage("Please enter a valid email.")
       .custom((value, { req }) => {
         // Find the user on the database, if exists then reject the promise with Promise.reject().
+        return true;
       })
       .normalizeEmail(),
     body("password").trim().isLength({ min: 8 }),

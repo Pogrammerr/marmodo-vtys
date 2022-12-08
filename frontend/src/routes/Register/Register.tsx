@@ -20,7 +20,7 @@ const Form = styled.form`
   }
 `
 
-const Login = () => {
+const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -37,6 +37,7 @@ const Login = () => {
         <Form onSubmit={handleSubmit}>
           <Input name='email' id='email' type='email' placeholder='Email' label='Email' />
           <Input name='password' id='password' type='password' placeholder='Şifre' label='Şifre' />
+          <Input name='confirmPassword' id='confirmPassword' type='password' placeholder='Şifre Tekrar' label='Şifre Tekrar' />
           <Button variant='primary' type="submit">Kayıt ol</Button>
         </Form>
         <Text fontSize='s'><Link to='/' style={{ color: '#01C2FF' }}>Giris Yapın</Link> </Text>
@@ -45,4 +46,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Register

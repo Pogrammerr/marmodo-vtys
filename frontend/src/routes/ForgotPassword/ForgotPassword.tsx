@@ -20,7 +20,7 @@ const Form = styled.form`
   }
 `
 
-const Login = () => {
+const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -45,4 +45,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default ForgotPassword

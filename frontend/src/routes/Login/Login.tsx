@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Button, Input, Layout, Link, Text } from 'components'
 import { Card } from 'components/Card'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Form = styled.form`
@@ -21,13 +22,15 @@ const Form = styled.form`
 `
 
 const Login = () => {
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     console.log(e.target.elements.email.value)
     const data = { email: e.target.elements.email.value, password: e.target.elements.password.value }
-    const result = await axios.post('/api/user/login', data)
-    console.log(result)
+    // const result = await axios.post('/api/user/login', data)
+    // console.log(result)
+    navigate('/home')
   }
 
   return (

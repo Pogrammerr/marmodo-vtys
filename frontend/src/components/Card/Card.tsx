@@ -27,9 +27,9 @@ interface CardProps extends FlexProps {
 
 const StyledCard = styled.div<CardProps>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${p => p.flexDirection || 'column'};
   width: ${p => cardSizes[p.size || 'sm'].width};
-  max-width: ${p => cardSizes[p.size || 'sm'].maxWidth};
+  max-width: 95%;
   background: #fff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   position: relative;
@@ -45,12 +45,4 @@ const StyledCard = styled.div<CardProps>`
   ${maxWidth}
 `
 
-const Card: React.FC<CardProps & PropsWithChildren> = ({ children, ...props }) => {
-  return (
-    <StyledCard {...props}>
-      {children}
-    </StyledCard>
-  )
-}
-
-export default Card
+export default StyledCard

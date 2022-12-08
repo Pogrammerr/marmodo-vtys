@@ -6,8 +6,8 @@ const Wrapper = styled.div<{ small?: boolean }>`
   flex-direction: column;
   font-size: 1.6rem;
   max-width: 90%;
-  min-width: ${p => p.small ? '45px' : '150px'};
-  width: ${p => p.small ? "80px" : "350px"};
+  min-width: 100px;
+  width: 142px;
   height: 62px;
 `
 
@@ -31,14 +31,14 @@ interface Option {
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   options: Option[]
-  label: string
+  label?: string
   small?: boolean
 }
 
 const Dropdown: React.FC<Props> = ({ options, label, value, small, ...props }) => {
   return (
     <Wrapper small={small}>
-      <label htmlFor={props.id}>{label}</label>
+      {label && <label htmlFor={props.id}>{label}</label>}
       <StyledDropdown value={value} {...props}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>{option.label}</option>

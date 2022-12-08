@@ -26,7 +26,7 @@ const StyledInput = styled.input<{ wrong?: boolean, right?: boolean }>`
 `
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string
+  label?: string
   small?: boolean
   ref?: MutableRefObject<HTMLInputElement | null>
   wrong?: boolean
@@ -36,7 +36,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export const Input: React.FC<InputProps> = ({ label, ref, small, wrong, right, ...props }) => {
   return (
     <InputWrapper small={small}>
-      <StyledLabel htmlFor={props.id}>{label}</StyledLabel>
+      {label && <StyledLabel htmlFor={props.id}>{label}</StyledLabel>}
       <StyledInput {...props} ref={ref} wrong={wrong} right={right} />
     </InputWrapper>
   )

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { flexbox, space, maxWidth } from 'styled-system'
+import { flexbox, space, maxWidth, width } from 'styled-system'
 import { FlexProps } from './types'
 
 const getGap = ({ gap }: FlexProps) => {
@@ -11,6 +11,7 @@ const Flex = styled.div<FlexProps>`
   gap: ${getGap}rem;
   ${flexbox}
   ${space}
+  ${width}
   ${maxWidth}
 `
 

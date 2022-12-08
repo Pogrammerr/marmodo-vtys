@@ -7,10 +7,6 @@ const getFontSize = ({ fontSize = "m" }: TextProps) => {
   return fontSizes[fontSize] || fontSize
 }
 
-/**
- * Font-size is in rem as number.
- * Using variant instead of fontSize is recommended.
- */
 const Text = styled.div<TextProps>`
   color: ${p => p.color ? p.theme.colors[p.color] : p.theme.colors.text};
   font-size: ${getFontSize}rem;

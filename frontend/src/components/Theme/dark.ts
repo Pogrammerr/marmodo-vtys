@@ -1,6 +1,8 @@
 import { globalColors } from "./config";
 import { ThemedColors } from "./types";
 
+// Not used, check light.ts
+
 const darkTheme: ThemedColors = {
   ...globalColors,
   id: "dark",

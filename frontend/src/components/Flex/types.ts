@@ -1,6 +1,6 @@
-import { FlexboxProps, SpaceProps, MaxWidthProps } from "styled-system";
+import { FlexboxProps, SpaceProps, MaxWidthProps, WidthProps } from "styled-system";
 import { DefaultTheme } from "styled-components";
 
-export interface FlexProps extends FlexboxProps, SpaceProps, MaxWidthProps {
+export interface FlexProps extends FlexboxProps, SpaceProps, MaxWidthProps, WidthProps {
   gap?: number;
 }

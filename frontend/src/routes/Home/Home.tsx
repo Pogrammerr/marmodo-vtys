@@ -1,8 +1,30 @@
 import React from 'react'
+import { Flex, Layout, Card, Text } from 'components'
+import UserImg from 'assets/user.png'
+import { FaGraduationCap, FaListUl } from 'react-icons/fa'
+import ProfileCard from './components/ProfileCard'
+import ClassCard from './components/ClassCard'
+import NewPostCard from './components/NewPostCard'
+import PostCard from './components/PostCard'
+import HomeworkCard from './components/HomeworkCard'
 
 const Home = () => {
+
   return (
-    <div>Home</div>
+    <Layout>
+      <Flex flexDirection='column'>
+        <ProfileCard />
+        <ClassCard />
+      </Flex>
+      <Flex flexDirection='column'>
+        <NewPostCard />
+        <PostCard />
+        <PostCard />
+      </Flex>
+      <Flex flexDirection='column'>
+        <HomeworkCard />
+      </Flex>
+    </Layout>
   )
 }
 

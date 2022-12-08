@@ -4,3 +4,13 @@ export interface Homework {
   deadline: string;
   url: string;
 }
+
+export interface User {
+  id: number;
+  email: string;
+  jwtToken: string;
+}
+
+export interface State {
+  user: User
+}

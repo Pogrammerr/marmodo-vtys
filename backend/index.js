@@ -2,12 +2,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
+const jwt = require("jsonwebtoken");
 const { apiRoutes } = require("./routes");
 require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Setting multer to recognize images.
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images");
@@ -18,6 +20,7 @@ const storage = multer.diskStorage({
   },
 });
 
+// Setting multer filter to filter image file formats.
 const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/png" ||
@@ -34,6 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(multer({ storage, fileFilter }).single("image"));
 
+// Accepting requests from different origins
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(

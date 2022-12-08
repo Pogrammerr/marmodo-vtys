@@ -18,8 +18,6 @@ const Home = () => {
       </Flex>
       <Flex flexDirection='column' flex={2}>
         <NewPostCard />
-        <PostCard />
-        <PostCard />
       </Flex>
       <Flex flexDirection='column' flex={1}>
         <HomeworkCard />

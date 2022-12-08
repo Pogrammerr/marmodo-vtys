@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 exports.isAuth = (req, res, next) => {
   const token = req.get("Authorization").split(" ")[1]; // Bearer ey17hsd71bxhj
   let decodedToken;

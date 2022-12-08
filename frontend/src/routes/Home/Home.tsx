@@ -12,16 +12,16 @@ const Home = () => {
 
   return (
     <Layout>
-      <Flex flexDirection='column'>
+      <Flex flexDirection='column' flex={1}>
         <ProfileCard />
         <ClassCard />
       </Flex>
-      <Flex flexDirection='column'>
+      <Flex flexDirection='column' flex={2}>
         <NewPostCard />
         <PostCard />
         <PostCard />
       </Flex>
-      <Flex flexDirection='column'>
+      <Flex flexDirection='column' flex={1}>
         <HomeworkCard />
       </Flex>
     </Layout>

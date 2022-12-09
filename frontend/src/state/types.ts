@@ -21,7 +21,7 @@ export interface Class {
 }
 
 export interface User {
-  id: number;
+  id: string;
   email: string;
   jwtToken: string;
   firstName: string;

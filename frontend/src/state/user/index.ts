@@ -4,7 +4,7 @@ import fetchUser from './fetchUser'
 
 const initialState: User = {
   email: '',
-  id: 0,
+  id: '',
   jwtToken: '',
   firstName: '',
   lastName: '',
@@ -27,8 +27,8 @@ export const userSlice = createSlice({
 export const { setUserData } = userSlice.actions
 
 // Thunks
-export const fetchUserData = (email: string, jwtToken: string) => async (dispatch: any) => {
-  const userData = await fetchUser(email, jwtToken)
+export const fetchUserData = (id: string, jwtToken: string) => async (dispatch: any) => {
+  const userData = await fetchUser(id, jwtToken)
   dispatch(setUserData(userData))
 }
 

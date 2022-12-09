@@ -1,13 +1,15 @@
-import { Loader, Navbar } from './components';
-import { Suspense, lazy } from 'react'
+import { Loader, Navbar } from "./components";
+import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
+import useEagerLogin from "hooks/useEagerLogin";
 
-const Home = lazy(() => import('./routes/Home'))
-const Login = lazy(() => import('./routes/Login'))
-const Register = lazy(() => import('./routes/Register'))
-const ForgotPassword = lazy(() => import('./routes/ForgotPassword'))
+const Home = lazy(() => import("./routes/Home"));
+const Login = lazy(() => import("./routes/Login"));
+const Register = lazy(() => import("./routes/Register"));
+const ForgotPassword = lazy(() => import("./routes/ForgotPassword"));
 
 function App() {
+  useEagerLogin();
 
   return (
     <>
@@ -21,7 +23,7 @@ function App() {
         </Routes>
       </Suspense>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

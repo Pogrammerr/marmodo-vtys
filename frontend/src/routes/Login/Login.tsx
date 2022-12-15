@@ -51,7 +51,7 @@ const Login = () => {
         e.response.data.message ===
           "Girilen Email ile kayıtlı kullanıcı bulunamadı."
       )
-        setError(e.response.data.messag);
+        setError(e.response.data.message);
       else setError("Bilinmeyen bir hata oluştu.");
     }
   };

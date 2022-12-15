@@ -36,18 +36,22 @@ const useEagerLogin = () => {
   const navigate = useNavigate()
   const [timer, setTimer] = useState<any>(null)
 
-  if (tokenData?.token && tokenData?.remainingTime > 0) {
-    const decodedToken = jwtDecode<{ email: string, id: string }>(tokenData?.token)
-    dispatch(fetchUserData(decodedToken.id, tokenData?.token))
-    navigate('/home')
-  }
-
   const logout = useCallback(() => {
     localStorage.removeItem('token')
     localStorage.removeItem('tokenExpiration')
     clearTimeout(timer)
     navigate('/')
   }, [])
+
+  if (tokenData?.token) {
+    if (tokenData?.remainingTime > 0) {
+      const decodedToken = jwtDecode<{ email: string, id: string }>(tokenData?.token)
+      dispatch(fetchUserData(decodedToken.id, tokenData?.token))
+      navigate('/home')
+    } else {
+      logout()
+    }
+  }
 
   useEffect(() => {
     if (tokenData)

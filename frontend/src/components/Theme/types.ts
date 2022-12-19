@@ -10,11 +10,21 @@ export interface GlobalColors {
   lightGray: string;
   gray: string;
   black: string;
+  orange: string;
+  purple: string;
+  darkBlue: string;
+  lightPink: string;
+  darkPink: string;
+  lightBlue: string;
+  cyan: string;
+  yellow: string;
+  darkGreen: string;
 }
 
 export interface Gradients {
   primaryGradient: string;
   primaryGradientHorizontal: string;
+  classGradients: string[];
 }
 
 export interface ThemedColors extends GlobalColors {

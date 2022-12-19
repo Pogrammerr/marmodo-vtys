@@ -19,7 +19,8 @@ exports.createUser = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 12);
     console.log("hashedPassword: ", hashedPassword);
     const results = await pool.query(
-      'INSERT INTO users ("firstName", "lastName", email, password) VALUES ($1, $2, $3, $4)',
+      `INSERT INTO users ("firstName", "lastName", email, password) 
+      VALUES ($1, $2, $3, $4)`,
       [name, surname, email, hashedPassword]
     );
     res.status(200).json(results.rows);
@@ -42,21 +43,84 @@ exports.getUserData = async (req, res, next) => {
     }
 
     const userClassesResult = await pool.query(
-      'SELECT * FROM "usersClasses" WHERE "userId"=$1',
+      `SELECT * FROM "users_classes" 
+      WHERE "userId"=$1`,
       [id]
     );
 
     const userClasses = await Promise.all(
       userClassesResult.rows.map(async (row) => {
         const classResult = await pool.query(
-          "SELECT * FROM classes WHERE id=$1",
+          `SELECT * FROM classes AS cl
+          WHERE cl.id=$1`,
           [row.classId]
         );
-        return classResult.rows[0];
+
+        const posts = await Promise.all(
+          classResult.rows.map(async (classData) => {
+            const postResult = await pool.query(
+              `SELECT * FROM posts as po
+              JOIN classes_posts as cp ON po.id = cp."postId"
+              WHERE cp."classId" = $1`,
+              [classData.id]
+            );
+
+            const homeworks = await Promise.all(
+              postResult.rows.map(async (postData) => {
+                if (postData.homeworkId) {
+                  const homeworkResult = await pool.query(
+                    `SELECT * FROM homeworks as hw
+                    WHERE id=$1`,
+                    [postData.homeworkId]
+                  );
+                  return homeworkResult.rows[0];
+                }
+              })
+            );
+
+            const authors = await Promise.all(
+              postResult.rows.map(async (postData) => {
+                const authorResult = await pool.query(
+                  `SELECT * FROM users
+                  WHERE users.id = $1`,
+                  [postData.authorId]
+                );
+
+                return authorResult.rows[0];
+              })
+            );
+
+            const postObject = postResult.rows.map((res) => {
+              return {
+                id: res.id,
+                details: res.details,
+                createdAt: res.createdAt,
+                homework: homeworks
+                  .filter((hw) => hw)
+                  .find((hw) => hw.id === res.homeworkId),
+                author: authors
+                  .filter((author) => author)
+                  .find((author) => author.id === res.authorId),
+              };
+            });
+
+            return postObject;
+          })
+        );
+
+        console.log({
+          ...classResult.rows[0],
+          posts,
+        });
+
+        return {
+          ...classResult.rows[0],
+          posts: posts[0],
+        };
       })
     );
 
-    console.log(userClasses);
+    // console.log(userClasses);
 
     const userObj = {
       ...user.rows[0],
@@ -111,3 +175,5 @@ exports.login = async (req, res, next) => {
     handleError(e, next);
   }
 };
+
+exports.getUserPosts = (req, res) => {};

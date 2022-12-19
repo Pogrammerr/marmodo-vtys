@@ -38,11 +38,27 @@ export const globalColors: GlobalColors = {
   lightGray: "#3D3D3D88",
   gray: "#636363",
   black: "#000",
+  orange: "#B6701E",
+  purple: "#923DFF",
+  darkBlue: "#203D87",
+  lightPink: "#FF6C90",
+  darkPink: "#833853",
+  lightBlue: "#6CFFF6",
+  cyan: "#4AADA7",
+  yellow: "#FFF85B",
+  darkGreen: "#78A53E",
 };
 
 export const gradients: Gradients = {
   primaryGradient: `linear-gradient(180deg, ${globalColors.primary} 0%, ${globalColors.secondary} 100%)`,
   primaryGradientHorizontal: `linear-gradient(90deg, ${globalColors.primary} 0%, ${globalColors.secondary} 100%)`,
+  classGradients: [
+    `linear-gradient(0deg, ${globalColors.orange} 0%, ${globalColors.fail} 100%)`,
+    `linear-gradient(0deg, ${globalColors.darkBlue} 0%, ${globalColors.purple} 100%)`,
+    `linear-gradient(0deg, ${globalColors.darkPink} 0%, ${globalColors.lightPink} 100%)`,
+    `linear-gradient(0deg, ${globalColors.cyan} 0%, ${globalColors.lightBlue} 100%)`,
+    `linear-gradient(0deg, ${globalColors.darkGreen} 0%, ${globalColors.yellow} 100%)`,
+  ]
 };
 
 const globalTheme = {

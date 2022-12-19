@@ -1,19 +1,21 @@
 export interface Homework {
-  id: number;
-  label: string;
+  id: string;
+  name: string;
   deadline: string;
-  url: string;
+  filePath: string;
+  details: string;
 }
 
 export interface Post {
-  id: number;
-  creator: User
-  header: string;
-  homework: Homework;
+  id: string;
+  author: User
+  details: string;
+  createdAt: Date;
+  homework?: Homework;
 }
 
 export interface Class {
-  id: number;
+  id: string;
   name: string;
   creator: User;
   students: User[];

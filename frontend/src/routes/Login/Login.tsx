@@ -49,7 +49,7 @@ const Login = () => {
       if (
         e.response.data.message === "Wrong Password!" ||
         e.response.data.message ===
-          "Girilen Email ile kayıtlı kullanıcı bulunamadı."
+        "Girilen Email ile kayıtlı kullanıcı bulunamadı."
       )
         setError(e.response.data.message);
       else setError("Bilinmeyen bir hata oluştu.");

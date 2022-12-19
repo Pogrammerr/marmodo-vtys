@@ -8,7 +8,7 @@ const Wrapper = styled.div<{ small?: boolean }>`
   max-width: 90%;
   min-width: 100px;
   width: 142px;
-  height: 62px;
+  height: 32px;
 `
 
 const StyledDropdown = styled.select<{ wrong?: boolean }>`

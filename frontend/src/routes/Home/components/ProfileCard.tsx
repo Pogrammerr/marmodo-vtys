@@ -8,8 +8,8 @@ const ProfileCard = () => {
   const user = useUser();
   return (
     <Card size="sm" flexDirection="row">
-      <img src={UserImg} alt="User Picture" width={64} />
-      <Flex flexDirection="column">
+      <img src={UserImg} alt="User Picture" width={64} height={64} />
+      <Flex flexDirection="column" justifyContent='center'>
         <Text bold>
           {user.firstName} {user.lastName} <FaGraduationCap />{" "}
         </Text>

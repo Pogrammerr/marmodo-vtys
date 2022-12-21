@@ -12,6 +12,7 @@ import LogoShortImage from 'assets/logos/Logo_Short.png'
 import UserImg from 'assets/user.png'
 import { useDispatch } from 'react-redux'
 import fetchUser from 'state/user/fetchUser'
+import { useUser } from 'state/hooks'
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -52,9 +53,10 @@ const Menu = styled.nav<{ isOpen: boolean }>`
   }
 `
 
-const Logo = styled.div`
+const Logo = styled.div<{ loggedIn: boolean }>`
   display: flex;
   align-items: center;
+  justify-content: ${p => p.loggedIn ? 'flex-start' : 'center'};
   gap: 2rem;
 `
 
@@ -95,6 +97,7 @@ const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const { isM } = useBreakpoints()
   const navigate = useNavigate()
+  const user = useUser()
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -104,12 +107,12 @@ const Navbar: React.FC = () => {
 
   return (
     <HeaderWrapper>
-      <Logo>
+      <Logo loggedIn={user.isLoggedIn}>
         <Link to="/">
           <img src={isM ? LogoShortImage : LogoImage} alt="Marmodo Logo" style={{ height: '8rem' }} />
         </Link>
       </Logo>
-      <Menu isOpen={menuOpen}>
+      {user.isLoggedIn && <Menu isOpen={menuOpen}>
         <Link to="/home" isActive={pathname === '/home'}>
           <FaHome /> Home
         </Link>
@@ -120,10 +123,11 @@ const Navbar: React.FC = () => {
           <FaUsers /> Classes
         </Link>
         {isM && <Profile><img src={UserImg} alt="User Picture" /><Link to="/">Can Özfuttu <FaGraduationCap /></Link></Profile>}
-      </Menu>
-      {isM
+      </Menu>}
+      {user.isLoggedIn ? isM
         ? <MenuIcon isOpen={menuOpen} onClick={() => setMenuOpen((prev) => !prev)} />
         : <Profile><FaBell /> <img src={UserImg} alt="User Picture" /><FaRegArrowAltCircleRight onClick={handleLogout} cursor="pointer" /></Profile>
+        : <></>
       }
     </HeaderWrapper>
   )

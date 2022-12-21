@@ -34,6 +34,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Lato', sans-serif;
   }
   html {
+    scroll-behavior: smooth;
     font-size: 62.5%; // 1rem = 10px
     
     ${(p) => p.theme.mediaQueries.xl} {
@@ -50,6 +51,7 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     min-height: 100vh;
     color: ${(p) => p.theme.colors.text};
+    scroll-behavior: smooth;
   }
 
   body, div, textarea {
@@ -81,6 +83,15 @@ export const GlobalStyle = createGlobalStyle`
 
   #root {
     min-height: 100vh;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+    padding: 0;
+    
+    span {
+      font-weight: 400;
+    }
   }
 `;
 

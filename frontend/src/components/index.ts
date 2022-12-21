@@ -15,3 +15,4 @@ export * from "./Navbar";
 export * from "./Slider";
 export * from "./Text";
 export * from "./Theme";
+export * from "./Tooltip";

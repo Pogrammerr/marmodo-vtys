@@ -4,6 +4,10 @@ import React, { ChangeEvent, useState } from 'react'
 import { FaUsers } from 'react-icons/fa'
 import { Class } from 'state/types'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { fetchUserData } from 'state/user'
+import jwtDecode from 'jwt-decode'
+import toISOLocal from 'utils/toLocalIso'
 
 interface Props {
   classes: Class[];
@@ -13,7 +17,7 @@ interface Props {
 const initialInputState = {
   details: "",
   homeworkDetails: "",
-  homeworkFile: "",
+  homeworkFile: [],
   homeworkDeadline: "",
   homeworkName: "",
 }
@@ -23,6 +27,7 @@ const NewPostCard: React.FC<Props> = ({ classes, userId }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isHomework, setIsHomework] = useState(false)
   const [inputState, setInputState] = useState(initialInputState)
+  const dispatch = useDispatch<any>()
 
   const classesArr = classes?.map((classData) => {
     return {
@@ -34,11 +39,10 @@ const NewPostCard: React.FC<Props> = ({ classes, userId }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setInputState({
       ...inputState,
-      [e.target.name]: e.target.value
+      //@ts-ignore
+      [e.target.name]: e.target.name === "homeworkFile" ? e.target.files[0] : e.target.value
     })
   }
-
-  console.log(inputState)
 
   const handleDropdownChange = (e) => {
     const newValue = e.target.value;
@@ -48,13 +52,16 @@ const NewPostCard: React.FC<Props> = ({ classes, userId }) => {
 
   const handlePost = async (e) => {
     const chosenClass = classesArr[activeIndex]
-    const requestBody = { ...inputState, classId: chosenClass.value, userId }
-    const result = await axios.post('/api/posts/addPost', requestBody)
+    const requestBody = { ...inputState, time: toISOLocal(new Date()), classId: chosenClass.value, userId }
+    const jwtToken = localStorage.getItem('token')
+    const decodedToken = jwtDecode<{ email: string, id: string }>(jwtToken!)
+    const result = await axios.post('/api/posts/addPost', requestBody, { headers: { "Authorization": `Bearer ${jwtToken}`, "Content-Type": "multipart/form-data" } })
     console.log(result)
+    dispatch(fetchUserData(decodedToken?.id, jwtToken!))
   }
 
   return (
-    <Card size='lg'>
+    <Card size='lg' pinColor='rgba(250, 0, 255, 1)'>
       <Flex justifyContent='space-between'>
         <img src={UserImg} alt="User Picture" width={64} />
         <Input placeholder='Ne düşünüyorsun?' name="details" value={inputState.details} onChange={handleChange} />
@@ -69,9 +76,9 @@ const NewPostCard: React.FC<Props> = ({ classes, userId }) => {
       <Checkbox label="Ödev?" checked={isHomework} onChange={(e) => setIsHomework(e.target.checked)} />
       {
         isHomework &&
-        <Flex flexDirection='column'>
+        <Flex flexDirection='column' gap={1}>
           <Input label="Ödev Başlığı:" name="homeworkName" value={inputState.homeworkName} onChange={handleChange} />
-          <Input type="file" label="Dosya:" name="homeworkFile" value={inputState.homeworkFile} onChange={handleChange} />
+          <Input type="file" label="Dosya:" name="homeworkFile" onChange={handleChange} />
           <Input type="datetime-local" label="Teslim Tarihi" name="homeworkDeadline" value={inputState.homeworkDeadline} onChange={handleChange} />
           <Textarea label='Açıklama:' name="homeworkDetails" value={inputState.homeworkDetails} onChange={handleChange} />
         </Flex>

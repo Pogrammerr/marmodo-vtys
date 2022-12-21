@@ -1,13 +1,25 @@
 import React from 'react'
-import { Flex, Card, Text } from 'components'
+import { Flex, Card, Text, Tooltip } from 'components'
 import { FaListUl, FaRegPlusSquare } from 'react-icons/fa'
 import { Class } from 'state/types'
+import Tippy from '@tippyjs/react'
+import 'tippy.js/dist/tippy.css';
+import axios from 'axios'
+import useModal from 'components/Modal/useModal'
+import InputModal from './modals/InputModal'
+import jwtDecode from 'jwt-decode'
+import { useDispatch } from 'react-redux'
+import { fetchUserData } from 'state/user'
 
 interface Props {
   classes: Class[]
+  classAmount: string;
 }
 
-const ClassCard: React.FC<Props> = ({ classes }) => {
+const tooltipText = ['Create Class', 'Join Class']
+
+const ClassCard: React.FC<Props> = ({ classes, classAmount }) => {
+  const dispatch = useDispatch<any>()
 
   const classRows = classes?.map((classData) => {
     return (
@@ -15,13 +27,28 @@ const ClassCard: React.FC<Props> = ({ classes }) => {
     )
   })
 
-  console.log('classrows', classRows)
+  const handleCreateClass = async (className: string) => {
+    console.log('Class created.', className)
+    const jwtToken = localStorage.getItem('token')
+    const decodedToken = jwtDecode<{ email: string, id: string }>(jwtToken!)
+    const result = await axios.post('/api/classes/createClass', { className }, { headers: { "Authorization": `Bearer ${jwtToken}` } })
+    dispatch(fetchUserData(decodedToken?.id, jwtToken!))
+    return result.data
+  }
+
+  const handleJoinClass = () => {
+    console.log('Joined class.')
+    return null
+  }
+
+  const [showCreateClassModal] = useModal(<InputModal title="Sınıf Oluştur" inputLabel='Sınıf Adı: ' buttonLabel='Gönder!' resultLabel='Sınıf Kodunuz:' clickHandler={handleCreateClass} />)
+  const [showJoinClassModal] = useModal(<InputModal title="Sınıfa Katıl" inputLabel='Sınıf Kodu: ' buttonLabel='Gönder!' clickHandler={handleJoinClass} />)
 
   return (
-    <Card size='sm' style={{ padding: '0', gap: '0' }}>
+    <Card size='sm' style={{ padding: '0', gap: '0' }} pinColor="rgba(5, 255, 0, 1)">
       <Flex justifyContent='space-between' width={1} style={{ borderBottom: '2px solid #0000005a', padding: '1.6rem' }}>
-        <Text><FaListUl /> Sınıflarım </Text>
-        <Text><FaRegPlusSquare cursor="pointer" /></Text>
+        <Text><FaListUl /> Sınıflarım ({classAmount}) </Text>
+        <Text><Tippy content={<Tooltip texts={tooltipText} clickHandlers={[showCreateClassModal, showJoinClassModal]} />} interactive><span><FaRegPlusSquare onClick={handleJoinClass} /></span></Tippy></Text>
       </Flex>
       {classRows}
     </Card>

@@ -1,54 +1,84 @@
 import { Button, Card, Flex, Link, Text } from 'components'
 import React from 'react'
-import TeacherImg from 'assets/teacher.png'
-import { FaRegClock, FaRegCommentDots, FaRegHeart } from 'react-icons/fa'
-import { HomeworkIcon } from 'components/Svg/icons'
-import { Homework } from 'state/types'
+import { FaRegClock } from 'react-icons/fa'
+import { DateTime } from 'luxon'
+import { Class, Homework, Post } from 'state/types'
+import styled, { keyframes } from 'styled-components'
 
 interface Props {
-  homework: Homework
+  post: Post
+  className: string
+  index: number
 }
 
-const PostCard: React.FC<Props> = ({ homework }) => {
+const PostCard: React.FC<Props> = ({ post, className, index }) => {
+  const createdAt = DateTime.fromISO(post.createdAt)
+  const { years, months, days, hours, minutes, seconds } = DateTime.now().diff(createdAt, ["years", "months", "days", "hours", "minutes", "seconds"])
+  const publishTimeFormatted = years ? `${years} yıl` : months ? `${months} ay` : days ? `${days} gün` : hours ? `${hours} saat` : minutes ? `${minutes} dakika` : seconds < 10 ? `Yeni!` : seconds ? `${Math.floor(seconds)} saniye` : '???'
+  const isNew = !years && !months && !days && !hours && !minutes && seconds < 10
+  const isHomework = !!post.homework
+
   return (
-    <Card size='lg'>
-      <Flex>
-        <img src={TeacherImg} alt="Teacher Picture" width={64} />
-        <Flex flexDirection='column'>
-          <Text bold>Buket Doğan, Veri Tabanı Yönetim Sistemleri <span>sınfında bir gönderi paylaştı</span> </Text>
-          <Text color="gray"><FaRegClock /> 55 dakika önce</Text>
+    <StyledPostCard size='lg' index={index} pinColor={isHomework ? "rgba(255, 0, 0, 1)" : "rgba(0, 255, 224, 1)"}>
+      <Flex gap={2}>
+        <img src={'http://127.0.0.1:5000/' + post.author.profileImgPath} alt="Teacher Picture" width={64} height={64} />
+        <Flex flexDirection='column' gap={0.5}>
+          <h1>{post.author.firstName} {post.author.lastName}, {className} <span>sınfında bir gönderi paylaştı</span> </h1>
+          <Text color={isNew ? "success" : "gray"}><FaRegClock /> {publishTimeFormatted} {!isNew && 'önce'} </Text>
         </Flex>
       </Flex>
 
-      <Text>Bugünkü işlenen dersin ödevi aşağıda verilmiştir. Herkese kolay gelsin.</Text>
+      <Text>{post.details}</Text>
 
-      {homework && <HomeworkCard {...homework} />}
+      {post.homework && <HomeworkCard homework={post.homework} />}
 
-      <Flex>
+      {/*       <Flex>
         <Flex flex={1} justifyContent='center' alignItems='center'>
           <Text><FaRegHeart />{' '}Beğen (2)</Text>
         </Flex>
         <Flex flex={1}>
           <Text><FaRegCommentDots />{' '}Yorum (0)</Text>
         </Flex>
-      </Flex>
-    </Card>
+      </Flex> */}
+    </StyledPostCard>
   )
 }
 
-const HomeworkCard = ({ label, deadline, url }) => {
+interface PropsHwCard {
+  homework: Homework
+}
+
+const HomeworkCard: React.FC<PropsHwCard> = ({ homework }) => {
+  const deadlineFormatted = new Date(homework.deadline).toLocaleDateString('tr-TR', { day: '2-digit', weekday: 'short', month: 'short', hour: '2-digit', minute: '2-digit' })
+
   return (
-    <Card flexDirection='row' style={{ backgroundColor: 'E2EEF1' }}>
-      <HomeworkIcon />
+    <Card size='sm' flexDirection='row' alignSelf='center' style={{ backgroundColor: '#E2EEF1' }}>
       <Flex flexDirection='column'>
-        <Text bold>{label}</Text>
-        <Text><FaRegClock />{deadline} </Text>
+        <Text bold>{homework.name}</Text>
+        <Text><FaRegClock /> {deadlineFormatted} </Text>
       </Flex>
-      <Link to={url}>
+      <Link to={`/homework/${homework.id}`}>
         <Button>İncele</Button>
       </Link>
     </Card>
   )
 }
+
+const fadeInFromLeft = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`
+
+const StyledPostCard = styled(Card) <{ index: number }>`
+  opacity: 0;
+  animation: ${fadeInFromLeft} .5s linear ${p => p.index / 4}s forwards;
+`
 
 export default PostCard

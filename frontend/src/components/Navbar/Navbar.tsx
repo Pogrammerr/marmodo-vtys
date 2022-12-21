@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useLocation } from 'react-router-dom'
-import { FaHome, FaEnvelope, FaUsers, FaBell, FaGraduationCap } from 'react-icons/fa'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { FaHome, FaEnvelope, FaUsers, FaBell, FaGraduationCap, FaRegArrowAltCircleRight } from 'react-icons/fa'
 import { Link } from 'components/Link'
 import { Text } from 'components/Text'
 import { MenuIcon } from 'components/Svg/icons'
@@ -10,6 +10,8 @@ import { Button } from 'components/Button'
 import LogoImage from 'assets/logos/Logo.png'
 import LogoShortImage from 'assets/logos/Logo_Short.png'
 import UserImg from 'assets/user.png'
+import { useDispatch } from 'react-redux'
+import fetchUser from 'state/user/fetchUser'
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -92,6 +94,13 @@ const Navbar: React.FC = () => {
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const { isM } = useBreakpoints()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('tokenExpiration')
+    navigate('/')
+  }
 
   return (
     <HeaderWrapper>
@@ -114,7 +123,7 @@ const Navbar: React.FC = () => {
       </Menu>
       {isM
         ? <MenuIcon isOpen={menuOpen} onClick={() => setMenuOpen((prev) => !prev)} />
-        : <Profile><FaBell /> <img src={UserImg} alt="User Picture" /></Profile>
+        : <Profile><FaBell /> <img src={UserImg} alt="User Picture" /><FaRegArrowAltCircleRight onClick={handleLogout} cursor="pointer" /></Profile>
       }
     </HeaderWrapper>
   )

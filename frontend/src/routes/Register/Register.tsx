@@ -23,11 +23,13 @@ const Form = styled.form`
 
 const Register = () => {
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setSuccess('')
     const data = { email: e.target.elements.email.value, password: e.target.elements.password.value, name: e.target.elements.name.value, surname: e.target.elements.surname.value }
     if (e.target.elements.confirmPassword.value !== e.target.elements.password.value) {
       return setError('Şifreler eşleşmiyor.')
@@ -35,7 +37,7 @@ const Register = () => {
     try {
       const result = await axios.post('/api/user/createUser', data)
       console.log(result.data)
-      navigate('/')
+      setSuccess('Kayıt başarılı, giriş yapabilirsiniz.')
     } catch (e: any) {
       if (e.response.data.message === 'Validation failed!')
         setError('Şifreniz en az 8 karakter olmalıdır.')
@@ -54,6 +56,7 @@ const Register = () => {
           <Input name='confirmPassword' id='confirmPassword' type='password' placeholder='Şifre Tekrar' label='Şifre Tekrar' />
           <Button variant='primary' type="submit">Kayıt ol</Button>
           {error && <Text color='fail'>{error}</Text>}
+          {success && <Text color='success'>{success}</Text>}
         </Form>
         <Text fontSize='s'><Link to='/' style={{ color: '#01C2FF' }}>Giris Yapın</Link> </Text>
       </Card>

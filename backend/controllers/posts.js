@@ -9,27 +9,45 @@ exports.addPost = async (req, res) => {
     userId,
     classId,
     details,
+    time,
     homeworkDetails,
-    homeworkFile,
     homeworkDeadline,
     homeworkName,
   } = req.body;
 
-  const now = new Date().toISOString();
+  const filePath = req.file.path.slice(7, undefined);
 
+  /*   if (!file) {
+    const error = new Error("Eklenen dosya desteklenmeyen bir formatta.");
+    error.statusCode = 404;
+    throw error;
+  } */
+
+  let hwId = null;
   if (homeworkName) {
-    /*     const hwresult = await pool.query(
-      `INSERT INTO posts (name, deadline, "filePath", details)
-      VALUES ($1, $2, $3, $4)`,
-      [homeworkName, homeworkDeadline, homeworkFile, homeworkDetails]
-    ); */
+    const hwresult = await pool.query(
+      `INSERT INTO homeworks (name, deadline, "filePath", details)
+      VALUES ($1, $2, $3, $4)
+      RETURNING "id"`,
+      [homeworkName, homeworkDeadline, filePath, homeworkDetails]
+    );
+    hwId = hwresult.rows[0].id;
   }
 
-  /*   const result = await pool.query(
-    `INSERT INTO homeworks ("authorId", details, "createdAt", "homeworkId")
-    VALUES ($1, $2, $3, $4)`,
-    [userId, postDetails, now]
-  ); */
+  const postResult = await pool.query(
+    `INSERT INTO posts ("authorId", details, "createdAt", "homeworkId")
+    VALUES ($1, $2, $3, $4)
+    RETURNING id`,
+    [userId, details, time, hwId]
+  );
+
+  const insertedPostId = postResult.rows[0].id;
+
+  pool.query(
+    `INSERT INTO classes_posts ("classId", "postId")
+    VALUES ($1, $2)`,
+    [classId, insertedPostId]
+  );
 
   res.status(200).json({ res: "success!" });
 };

@@ -1,24 +1,21 @@
 import { Text } from 'components/Text'
-import { ModalContext } from 'components/context/modalContext'
-import React, { useContext } from 'react'
+import React, { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 
 const StyledModal = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 800px;
+  max-width: 70%;
   max-height: 60%;
   background: ${p => p.theme.colors.modalBackgroundColor};
   border: 4px solid ${p => p.theme.colors.secondary};
+  border-radius: 12px;
   z-index: 100;
   overflow-y: scroll;
+  padding: 2.4rem;
 
   ${p => p.theme.mediaQueries.m} {
-    max-width: 500px;
-  }
-
-  ${p => p.theme.mediaQueries.s} {
-    max-width: 300px;
+    max-width: 90%;
   }
 
   &::-webkit-scrollbar {
@@ -35,32 +32,40 @@ const StyledModal = styled.div`
   }
 `
 
-const ModalImage = styled.img`
-  width: 100%;
-  object-fit: cover;
-  max-height: 50%;
-`
+const ModalHeader = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
 
-const ModalContent = styled.div`
-  padding: 2rem;
-  text-align: start;
-
-  & > div:nth-of-type(1) {
-    align-self: center;
-    text-align: center;
-    margin: 1rem;
+  & > div:nth-of-type(2) {
+    cursor: pointer;
   }
 `
 
-const Modal = () => {
-  const { title, details, imageUri } = useContext(ModalContext)
+const ModalBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.6rem;
+  gap: 8px;
+`
+
+interface ModalProps extends PropsWithChildren {
+  title: string;
+  onDismiss?: () => void
+}
+
+const Modal: React.FC<ModalProps> = ({ title, onDismiss, children }) => {
   return (
     <StyledModal>
-      <ModalImage src={`img/${imageUri}.webp`} alt={imageUri} />
-      <ModalContent>
-        <Text variant='l' color='secondary'>{title}</Text>
-        <Text variant='s'>{details}</Text>
-      </ModalContent>
+      <ModalHeader>
+        <Text fontSize='l' color='secondary'>{title}</Text>
+        <Text onClick={onDismiss}>X</Text>
+      </ModalHeader>
+      <ModalBody>
+        {children}
+      </ModalBody>
     </StyledModal>
   )
 }

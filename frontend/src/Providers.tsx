@@ -1,9 +1,9 @@
 import { GlobalStyle } from "components"
-import ModalProvider from "components/context/modalContext"
 import ThemeProvider from "components/context/themeContext"
 import { BrowserRouter } from "react-router-dom"
 import { Provider as ReduxProvider } from 'react-redux'
 import store from 'state'
+import ModalProvider from "components/Modal/ModalContext"
 
 const Providers = ({ children }) => {
   return (

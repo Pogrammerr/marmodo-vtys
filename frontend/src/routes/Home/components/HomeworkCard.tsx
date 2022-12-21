@@ -1,4 +1,4 @@
-import { Card, Flex, Text } from 'components'
+import { Card, Flex, Link, Text } from 'components'
 import React from 'react'
 import { FaPencilRuler, FaRegClock, FaRegPlusSquare } from 'react-icons/fa'
 import { Class } from 'state/types'
@@ -21,7 +21,7 @@ const HomeworkCard: React.FC<Props> = ({ classes }) => {
 
       if (timeLeft > 0) {
         return (
-          <Homework key={homework.id} className={classData.name} homeworkName={homework.name} deadline={deadlineFormatted} />
+          <Homework key={homework.id} className={classData.name} homeworkName={homework.name} id={homework.id} deadline={deadlineFormatted} />
         )
       }
     })
@@ -29,10 +29,9 @@ const HomeworkCard: React.FC<Props> = ({ classes }) => {
   })
 
   return (
-    <Card size='sm' style={{ padding: '0', gap: '0' }}>
+    <Card size='sm' style={{ padding: '0', gap: '0' }} pinColor="rgba(0, 194, 255, 1)">
       <Flex justifyContent='space-between' width={1} style={{ borderBottom: '2px solid #0000005a', padding: '1.6rem' }}>
         <Text><FaPencilRuler /> Ödevlerim </Text>
-        <Text><FaRegPlusSquare cursor="pointer" /></Text>
       </Flex>
       {homeworkCards}
     </Card>
@@ -52,18 +51,20 @@ const ClassProfile = styled.div<{ index: number }>`
   height: 48px;
 `
 
-const Homework = ({ className, homeworkName, deadline }) => {
+const Homework = ({ className, homeworkName, id, deadline }) => {
   const classInitials = className.split(" ").map((str) => str.charAt(0)).slice(0, 2)
   const classNameShort = className.slice(0, 9)
 
   const random = Math.floor(Math.random() * 4)
   return (
     <Flex width={1} style={{ padding: '1.6rem' }} alignItems='center' gap={1}>
-      <ClassProfile index={random}>{classInitials}</ClassProfile>
-      <Flex flexDirection="column" gap={0.5}>
-        <Text bold>{homeworkName}</Text>
-        <Text fontSize="s" ><FaRegClock /> {deadline}, {classNameShort}...</Text>
-      </Flex>
+      <Link to={`/homework/${id}`}>
+        <ClassProfile index={random}>{classInitials}</ClassProfile>
+        <Flex flexDirection="column" gap={0.5}>
+          <Text bold>{homeworkName}</Text>
+          <Text fontSize="s" ><FaRegClock /> {deadline}, {classNameShort}...</Text>
+        </Flex>
+      </Link>
     </Flex>
   )
 }

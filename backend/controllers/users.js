@@ -17,7 +17,6 @@ exports.createUser = async (req, res, next) => {
   }
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
-    console.log("hashedPassword: ", hashedPassword);
     const results = await pool.query(
       `INSERT INTO users ("firstName", "lastName", email, password) 
       VALUES ($1, $2, $3, $4)`,
@@ -48,11 +47,21 @@ exports.getUserData = async (req, res, next) => {
       [id]
     );
 
+    const userClassAmountResult = await pool.query(
+      `SELECT COUNT(*) FROM users_classes
+      WHERE "userId"=$1
+      `,
+      [id]
+    );
+
+    const userClassAmount = userClassAmountResult.rows[0].count;
+
     const userClasses = await Promise.all(
       userClassesResult.rows.map(async (row) => {
         const classResult = await pool.query(
-          `SELECT * FROM classes AS cl
-          WHERE cl.id=$1`,
+          `SELECT "id", "name", "creatorId", "code" FROM classes
+          GROUP BY "id"
+          HAVING "id"=$1`,
           [row.classId]
         );
 
@@ -108,14 +117,16 @@ exports.getUserData = async (req, res, next) => {
           })
         );
 
-        console.log({
-          ...classResult.rows[0],
-          posts,
-        });
+        const classUserAmount = await pool.query(
+          `SELECT COUNT(*) FROM users_classes
+          WHERE "classId"=$1`,
+          [row.classId]
+        );
 
         return {
           ...classResult.rows[0],
           posts: posts[0],
+          userAmount: classUserAmount.rows?.[0]?.count,
         };
       })
     );
@@ -125,6 +136,7 @@ exports.getUserData = async (req, res, next) => {
     const userObj = {
       ...user.rows[0],
       classes: userClasses,
+      classAmount: userClassAmount,
     };
 
     res.status(200).json(userObj);
@@ -175,5 +187,3 @@ exports.login = async (req, res, next) => {
     handleError(e, next);
   }
 };
-
-exports.getUserPosts = (req, res) => {};

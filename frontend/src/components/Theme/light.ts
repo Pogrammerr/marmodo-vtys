@@ -9,7 +9,7 @@ const lightTheme: ThemedColors = {
   bodyBackgroundColor: "#E2EEF1",
   cardBackgroundColor: "#A6B5EA",
   secondaryButton: "#fff",
-  modalBackgroundColor: "#A6B5EA",
+  modalBackgroundColor: "#E2EEF1",
 };
 
 export default lightTheme;

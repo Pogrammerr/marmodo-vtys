@@ -8,8 +8,10 @@ const initialState: User = {
   jwtToken: '',
   firstName: '',
   lastName: '',
+  profileImgPath: '',
   posts: [],
   classes: [],
+  classAmount: "0",
   isLoggedIn: false,
 }
 

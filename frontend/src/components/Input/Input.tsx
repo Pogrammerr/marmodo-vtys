@@ -23,6 +23,12 @@ const StyledInput = styled.input<{ wrong?: boolean, right?: boolean }>`
   color: ${p => p.theme.colors.text};
   width: 100%;
   height: 100%;
+
+  &[type=file] {
+    border: none;
+    width: auto;
+    height: auto;
+  }
 `
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

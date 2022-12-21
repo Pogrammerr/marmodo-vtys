@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.use("/user", userRoutes);
 router.use("/posts", postRoutes);
-// router.use("/classes", classRoutes);
+router.use("/classes", classRoutes);
 
 exports.apiRoutes = router;

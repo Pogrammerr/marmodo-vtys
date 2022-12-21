@@ -49,7 +49,7 @@ const useEagerLogin = () => {
         const decodedToken = jwtDecode<{ email: string, id: string }>(tokenData?.token)
         console.log(navigate)
         dispatch(fetchUserData(decodedToken.id, tokenData?.token))
-        navigate('/home')
+        setTimeout(() => navigate('/home'), 1000)
         timer = setTimeout(logout, tokenData?.remainingTime)
       } else {
         console.log('token expired, logging out.')

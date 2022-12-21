@@ -10,7 +10,7 @@ export interface Post {
   id: string;
   author: User
   details: string;
-  createdAt: Date;
+  createdAt: string; // ISO format
   homework?: Homework;
 }
 
@@ -28,8 +28,10 @@ export interface User {
   jwtToken: string;
   firstName: string;
   lastName: string;
+  profileImgPath: string;
   posts: Post[];
   classes: Class[];
+  classAmount: string;
   isLoggedIn: boolean;
 }
 

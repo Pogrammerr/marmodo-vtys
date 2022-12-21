@@ -1,9 +1,10 @@
 import axios from "axios";
 import { Button, Input, Layout, Link, Text } from "components";
 import { Card } from "components/Card";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "state/hooks";
 import { fetchUserData } from "state/user";
 import styled from "styled-components";
 
@@ -27,6 +28,11 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
+  const user = useUser()
+
+  useEffect(() => {
+    if (user.email) navigate('/home')
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault();

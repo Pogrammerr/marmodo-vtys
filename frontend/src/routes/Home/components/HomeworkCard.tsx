@@ -49,6 +49,15 @@ const ClassProfile = styled.div<{ index: number }>`
   color: ${p => p.theme.colors.white};
   width: 48px;
   height: 48px;
+  transition: all 300ms;
+`
+
+const StyledHomework = styled(Flex)`
+  &:hover {
+    & > a > div:nth-of-type(1) {
+      transform: translateY(-8px);
+    }
+  }
 `
 
 const Homework = ({ className, homeworkName, id, deadline }) => {
@@ -57,7 +66,7 @@ const Homework = ({ className, homeworkName, id, deadline }) => {
 
   const random = Math.floor(Math.random() * 4)
   return (
-    <Flex width={1} style={{ padding: '1.6rem' }} alignItems='center' gap={1}>
+    <StyledHomework width={1} style={{ padding: '1.6rem' }} alignItems='center' gap={1}>
       <Link to={`/homework/${id}`}>
         <ClassProfile index={random}>{classInitials}</ClassProfile>
         <Flex flexDirection="column" gap={0.5}>
@@ -65,7 +74,7 @@ const Homework = ({ className, homeworkName, id, deadline }) => {
           <Text fontSize="s" ><FaRegClock /> {deadline}, {classNameShort}...</Text>
         </Flex>
       </Link>
-    </Flex>
+    </StyledHomework>
   )
 }
 

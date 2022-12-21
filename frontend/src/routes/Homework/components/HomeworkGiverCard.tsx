@@ -10,11 +10,12 @@ interface Props {
 const HomeworkGiverCard: React.FC<Props> = ({ author, homework }) => {
 
   const deadlineFormatted = new Date(homework?.deadline || 0).toLocaleDateString('tr-TR', { day: '2-digit', weekday: 'short', month: 'short', hour: '2-digit', minute: '2-digit' })
+  const userImage = `http://127.0.0.1:5000/${author?.profileImgPath || "images/unknownUser.png"}`
 
   return (
     <Card size='lg' gap={2}>
       <Flex alignItems='center' gap={1}>
-        <img src={'http://127.0.0.1:5000/' + author?.profileImgPath} alt="User Profile" />
+        <img src={userImage} alt="User Profile" width={48} />
         <Text fontSize='xl'>{author?.firstName} {author?.lastName}</Text>
       </Flex>
       <Flex justifyContent='space-between'>

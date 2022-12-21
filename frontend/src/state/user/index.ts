@@ -33,5 +33,8 @@ export const fetchUserData = (id: string, jwtToken: string) => async (dispatch: 
   const userData = await fetchUser(id, jwtToken)
   dispatch(setUserData(userData))
 }
+export const resetUserData = () => async (dispatch: any) => {
+  dispatch(setUserData(initialState))
+}
 
 export default userSlice.reducer

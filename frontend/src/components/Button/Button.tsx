@@ -17,7 +17,7 @@ const StyledButton = styled.button<ButtonProps>`
   font-weight: bold;
   font-size: ${p => p.theme.fontSizes.s}rem;
   color: ${p => p.variant === "secondary" ? p.theme.colors.primary : "#fff"};
-  cursor: pointer;
+  cursor: ${p => p.disabled ? 'initial' : 'pointer'};
   transition: all 100ms linear;
   width: fit-content;
 
@@ -27,7 +27,7 @@ const StyledButton = styled.button<ButtonProps>`
   }
 
   &:hover {
-    background: ${p => p.theme.colors.primaryDark};
+    background: ${p => !p.disabled && p.theme.colors.primaryDark};
   }
 
   &:active {

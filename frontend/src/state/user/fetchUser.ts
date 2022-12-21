@@ -4,7 +4,7 @@ const fetchUser = async (id: string, jwtToken?: string) => {
   try {
     const result = await axios.post('/api/user/getUserData', { id })
     console.log(result)
-    const { classes, email, firstName, lastName, classAmount, profileImgPath } = result.data
+    const { classes, email, firstName, lastName, classAmount, profileImgPath, completedUsers } = result.data
 
     return {
       id,

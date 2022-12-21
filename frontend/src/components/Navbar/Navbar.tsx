@@ -3,16 +3,15 @@ import styled from 'styled-components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FaHome, FaEnvelope, FaUsers, FaBell, FaGraduationCap, FaRegArrowAltCircleRight } from 'react-icons/fa'
 import { Link } from 'components/Link'
-import { Text } from 'components/Text'
 import { MenuIcon } from 'components/Svg/icons'
 import useBreakpoints from 'components/hooks/useBreakpoints'
-import { Button } from 'components/Button'
 import LogoImage from 'assets/logos/Logo.png'
 import LogoShortImage from 'assets/logos/Logo_Short.png'
-import UserImg from 'assets/user.png'
-import { useDispatch } from 'react-redux'
-import fetchUser from 'state/user/fetchUser'
 import { useUser } from 'state/hooks'
+import useModal from 'components/Modal/useModal'
+import ImageModal from 'components/Modal/ImageModal'
+import { useDispatch } from 'react-redux'
+import { resetUserData } from 'state/user'
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -97,13 +96,23 @@ const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const { isM } = useBreakpoints()
   const navigate = useNavigate()
+  const dispatch = useDispatch<any>()
   const user = useUser()
+
+  const userImage = `http://127.0.0.1:5000/${user.profileImgPath || "images/unknownUser.png"}`
 
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('tokenExpiration')
+    dispatch(resetUserData())
     navigate('/')
   }
+
+  const handleUploadImage = (file: File) => {
+    console.log(file)
+  }
+
+  const [onPresentImageModal] = useModal(<ImageModal clickHandler={handleUploadImage} />)
 
   return (
     <HeaderWrapper>
@@ -122,11 +131,11 @@ const Navbar: React.FC = () => {
         <Link to="/classes" isActive={pathname === '/classes'}>
           <FaUsers /> Classes
         </Link>
-        {isM && <Profile><img src={UserImg} alt="User Picture" /><Link to="/">Can Özfuttu <FaGraduationCap /></Link></Profile>}
+        {isM && <Profile><img src={userImage} alt="User Picture" /><Link to="/">Can Özfuttu <FaGraduationCap /></Link></Profile>}
       </Menu>}
       {user.isLoggedIn ? isM
         ? <MenuIcon isOpen={menuOpen} onClick={() => setMenuOpen((prev) => !prev)} />
-        : <Profile><FaBell /> <img src={UserImg} alt="User Picture" /><FaRegArrowAltCircleRight onClick={handleLogout} cursor="pointer" /></Profile>
+        : <Profile><FaBell /> <img src={userImage} alt="User Picture" width={64} onClick={onPresentImageModal} /><FaRegArrowAltCircleRight onClick={handleLogout} cursor="pointer" /></Profile>
         : <></>
       }
     </HeaderWrapper>

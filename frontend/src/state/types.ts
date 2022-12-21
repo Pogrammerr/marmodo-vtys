@@ -4,6 +4,7 @@ export interface Homework {
   deadline: string;
   filePath: string;
   details: string;
+  completedUsers: User[];
 }
 
 export interface Post {

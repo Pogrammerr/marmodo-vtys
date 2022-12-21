@@ -37,7 +37,9 @@ exports.joinClass = async (req, res) => {
 
   const query2 = await pool.query(
     `INSERT INTO users_classes ("userId", "classId")
-    VALEUS ($1, $2)`,
+    VALUES ($1, $2)`,
     [req.userId, classId]
   );
+
+  res.status(200).json({ data: "success" });
 };

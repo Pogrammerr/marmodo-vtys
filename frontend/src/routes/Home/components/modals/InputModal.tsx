@@ -16,14 +16,14 @@ const InputModal: React.FC<InputModalProps> = ({ title, inputLabel, buttonLabel,
 
   const handleClick = async () => {
     const result = await clickHandler(inputString)
-    setResult(result.code)
+    setResult(result)
   }
 
   return (
     <Modal title={title} onDismiss={onDismiss}>
       <Input label={inputLabel} onChange={(e) => setInputString(e.target.value)} />
       <Button onClick={handleClick}>{buttonLabel}</Button>
-      {result && <Text>{resultLabel} {result}</Text>}
+      {resultLabel && result && <Text>{resultLabel} {result}</Text>}
     </Modal>
   )
 }

@@ -1,6 +1,6 @@
 import { Button, Card, Flex, Link, Text } from 'components'
 import React from 'react'
-import { FaRegClock } from 'react-icons/fa'
+import { FaPencilRuler, FaRegClock } from 'react-icons/fa'
 import { DateTime } from 'luxon'
 import { Class, Homework, Post } from 'state/types'
 import styled, { keyframes } from 'styled-components'
@@ -17,11 +17,12 @@ const PostCard: React.FC<Props> = ({ post, className, index }) => {
   const publishTimeFormatted = years ? `${years} yıl` : months ? `${months} ay` : days ? `${days} gün` : hours ? `${hours} saat` : minutes ? `${minutes} dakika` : seconds < 10 ? `Yeni!` : seconds ? `${Math.floor(seconds)} saniye` : '???'
   const isNew = !years && !months && !days && !hours && !minutes && seconds < 10
   const isHomework = !!post.homework
+  const userImage = `http://127.0.0.1:5000/${post.author.profileImgPath || "images/unknownUser.png"}`
 
   return (
     <StyledPostCard size='lg' index={index} pinColor={isHomework ? "rgba(255, 0, 0, 1)" : "rgba(0, 255, 224, 1)"}>
       <Flex gap={2}>
-        <img src={'http://127.0.0.1:5000/' + post.author.profileImgPath} alt="Teacher Picture" width={64} height={64} />
+        <img src={userImage} alt="Teacher Picture" width={64} height={64} style={{ borderRadius: '50%' }} />
         <Flex flexDirection='column' gap={0.5}>
           <h1>{post.author.firstName} {post.author.lastName}, {className} <span>sınfında bir gönderi paylaştı</span> </h1>
           <Text color={isNew ? "success" : "gray"}><FaRegClock /> {publishTimeFormatted} {!isNew && 'önce'} </Text>
@@ -54,7 +55,7 @@ const HomeworkCard: React.FC<PropsHwCard> = ({ homework }) => {
   return (
     <Card size='sm' flexDirection='row' alignSelf='center' style={{ backgroundColor: '#E2EEF1' }}>
       <Flex flexDirection='column'>
-        <Text bold>{homework.name}</Text>
+        <Text bold><FaPencilRuler /> {homework.name}</Text>
         <Text><FaRegClock /> {deadlineFormatted} </Text>
       </Flex>
       <Link to={`/homework/${homework.id}`}>

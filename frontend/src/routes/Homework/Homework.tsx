@@ -9,24 +9,26 @@ import HomeworkReceiverCard from './components/HomeworkReceiverCard'
 const Homework = () => {
   const { homeworkId } = useParams()
   const user = useUser()
-  const [homeworkData, setHomeworkData] = useState<Post | null>(null)
+  const [postData, setPostData] = useState<Post | null>(null)
 
   useEffect(() => {
     user.classes.forEach((c) => c.posts.find((p) => {
       if (p.homework?.id === homeworkId) {
-        setHomeworkData(p)
+        setPostData(p)
       }
     }))
-  }, [user.classes, homeworkId, setHomeworkData])
+  }, [user.classes, homeworkId, setPostData])
 
-  console.log(homeworkData)
+  const isAuthor = user.id === postData?.author.id
+  console.log(postData)
+
   return (
     <Layout>
       <Flex flex={2}>
-        <HomeworkGiverCard {...homeworkData} />
+        <HomeworkGiverCard {...postData} />
       </Flex>
       <Flex flex={1}>
-        <HomeworkReceiverCard />
+        <HomeworkReceiverCard post={postData!} isAuthor={isAuthor} />
       </Flex>
     </Layout>
   )

@@ -1,1 +1,1 @@
-export { fetchUserData } from './user'
+export { fetchUserData, resetUserData } from './user'

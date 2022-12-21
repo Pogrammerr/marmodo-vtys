@@ -8,7 +8,6 @@ const { handleError } = require("../utils/errors");
 exports.createUser = async (req, res, next) => {
   const { name, surname, email, password } = req.body;
   const errors = validationResult(req);
-  console.log("creating user");
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed!");
     error.statusCode = 422;
@@ -82,7 +81,18 @@ exports.getUserData = async (req, res, next) => {
                     WHERE id=$1`,
                     [postData.homeworkId]
                   );
-                  return homeworkResult.rows[0];
+
+                  const usersResult = await pool.query(
+                    `SELECT * FROM users_completedhomeworks as uc
+                    JOIN users as us ON us.id = uc."userId" 
+                    WHERE uc."homeworkId"=$1`,
+                    [postData.homeworkId]
+                  );
+
+                  return {
+                    ...homeworkResult.rows[0],
+                    completedUsers: usersResult.rows,
+                  };
                 }
               })
             );

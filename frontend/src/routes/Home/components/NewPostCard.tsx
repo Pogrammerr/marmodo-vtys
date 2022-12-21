@@ -12,6 +12,7 @@ import toISOLocal from 'utils/toLocalIso'
 interface Props {
   classes: Class[];
   userId: string;
+  profileImgPath: string;
 }
 
 const initialInputState = {
@@ -23,7 +24,7 @@ const initialInputState = {
 }
 
 
-const NewPostCard: React.FC<Props> = ({ classes, userId }) => {
+const NewPostCard: React.FC<Props> = ({ classes, userId, profileImgPath }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isHomework, setIsHomework] = useState(false)
   const [inputState, setInputState] = useState(initialInputState)
@@ -35,6 +36,8 @@ const NewPostCard: React.FC<Props> = ({ classes, userId }) => {
       value: classData.id
     }
   })
+
+  const userImage = `http://127.0.0.1:5000/${profileImgPath || "images/unknownUser.png"}`
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setInputState({
@@ -63,7 +66,7 @@ const NewPostCard: React.FC<Props> = ({ classes, userId }) => {
   return (
     <Card size='lg' pinColor='rgba(250, 0, 255, 1)'>
       <Flex justifyContent='space-between'>
-        <img src={UserImg} alt="User Picture" width={64} />
+        <img src={userImage} alt="User Picture" width={64} style={{ borderRadius: '50%' }} />
         <Input placeholder='Ne düşünüyorsun?' name="details" value={inputState.details} onChange={handleChange} />
       </Flex>
       <Flex justifyContent='space-between'>

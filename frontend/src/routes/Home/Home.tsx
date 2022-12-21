@@ -43,7 +43,7 @@ const Home = () => {
         <ClassCard classes={user.classes} classAmount={user.classAmount} />
       </Flex>
       <Flex flexDirection='column' flex={2} gap={3}>
-        <NewPostCard classes={user.classes} userId={user.id} />
+        <NewPostCard classes={user.classes} userId={user.id} profileImgPath={user.profileImgPath} />
         {postCards}
       </Flex>
       <Flex flexDirection='column' flex={1}>
